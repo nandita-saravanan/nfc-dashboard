@@ -10,25 +10,98 @@
     font-family: 'Orbitron', sans-serif;
     background-color: #0a0a0a;
     color: #00f0ff;
-    margin: 0; padding: 0;
+    margin: 0; 
+    padding: 0;
   }
-  .container { max-width: 1200px; margin: 2rem auto; padding: 1rem; }
-  header { text-align: center; margin-bottom: 2rem; }
-  header h1 { font-size: 2.5rem; color: #00f0ff; text-shadow: 0 0 10px #00f0ff; }
-  .card { background: #0d0d0d; border: 1px solid #00f0ff; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 0 20px #00f0ff33; }
-  .card h2 { margin-bottom: 1rem; font-size: 1.5rem; text-shadow: 0 0 5px #00f0ff; }
-  .switch-container { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
-  .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+  .container { 
+    max-width: 1200px; 
+    margin: 2rem auto; 
+    padding: 1rem; 
+  }
+  header { 
+    text-align: center; 
+    margin-bottom: 2rem; 
+  }
+  header h1 { 
+    font-size: 2.5rem; 
+    color: #00f0ff; 
+    text-shadow: 0 0 10px #00f0ff; 
+  }
+  .card { 
+    background: #0d0d0d; 
+    border: 1px solid #00f0ff; 
+    border-radius: 15px; 
+    padding: 2rem; 
+    margin-bottom: 2rem; 
+    box-shadow: 0 0 20px #00f0ff33; 
+  }
+  .card h2 { 
+    margin-bottom: 1rem; 
+    font-size: 1.5rem; 
+    text-shadow: 0 0 5px #00f0ff; 
+  }
+  .switch-container { 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    margin-top: 1rem; 
+  }
+  .switch { 
+    position: relative; 
+    display: inline-block; 
+    width: 60px; 
+    height: 34px; 
+  }
   .switch input { display: none; }
-  .slider { position: absolute; cursor: pointer; background-color: #111; border: 2px solid #00f0ff; border-radius: 34px; top: 0; left: 0; right: 0; bottom: 0; transition: 0.4s; }
-  .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: #00f0ff; transition: 0.4s; border-radius: 50%; box-shadow: 0 0 10px #00f0ff; }
+  .slider { 
+    position: absolute; 
+    cursor: pointer; 
+    background-color: #111; 
+    border: 2px solid #00f0ff; 
+    border-radius: 34px; 
+    top: 0; left: 0; right: 0; bottom: 0; 
+    transition: 0.4s; 
+  }
+  .slider:before { 
+    position: absolute; 
+    content: ""; 
+    height: 26px; 
+    width: 26px; 
+    left: 4px; 
+    bottom: 4px; 
+    background-color: #00f0ff; 
+    transition: 0.4s; 
+    border-radius: 50%; 
+    box-shadow: 0 0 10px #00f0ff; 
+  }
   input:checked + .slider { background-color: #0a0a0a; }
   input:checked + .slider:before { transform: translateX(26px); }
-  #nfcCode { margin-top: 1rem; font-size: 1.2rem; color: #00f0ff; text-shadow: 0 0 5px #00f0ff; }
-  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-  table th, table td { border: 1px solid #00f0ff; padding: 10px; text-align: center; }
-  table th { background: #000a1a; text-shadow: 0 0 5px #00f0ff; }
-  #productSummary { margin-top: 1rem; font-size: 1.1rem; color: #00f0ff; text-shadow: 0 0 5px #00f0ff; }
+  #nfcCode { 
+    margin-top: 1rem; 
+    font-size: 1.2rem; 
+    color: #00f0ff; 
+    text-shadow: 0 0 5px #00f0ff; 
+  }
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 1rem; 
+  }
+  table th, table td { 
+    border: 1px solid #00f0ff; 
+    padding: 10px; 
+    text-align: center; 
+  }
+  table th { 
+    background: #000a1a; 
+    text-shadow: 0 0 5px #00f0ff; 
+  }
+  #productSummary { 
+    margin-top: 1rem; 
+    font-size: 1.1rem; 
+    color: #00f0ff; 
+    text-shadow: 0 0 5px #00f0ff; 
+  }
 </style>
 </head>
 <body>
@@ -76,7 +149,7 @@
 </div>
 
 <script>
-  // Demo product data
+  // Product database
   const products = {
     "NFC001": {
       name: "Mixer Grinder",
@@ -111,22 +184,31 @@
         nfcCodeDisplay.textContent = "Scanning for NFC...";
         ndef.onreading = event => {
           for (const record of event.message.records) {
-            let nfcId = "";
+            let nfcText = "";
 
-            // Decode text record properly
             if (record.recordType === "text") {
               const textDecoder = new TextDecoder(record.encoding || "utf-8");
-              nfcId = textDecoder.decode(record.data);
+              nfcText = textDecoder.decode(record.data).trim();
             }
 
-            nfcCodeDisplay.textContent = `NFC Code: ${nfcId}`;
+            nfcCodeDisplay.textContent = NFC Code: ${nfcText};
+            console.log("Raw NFC data:", nfcText);
 
-            const product = products[nfcId];
-            if (product) {
-              // Update table
+            // Match NFC text to product database
+            let foundKey = null;
+            for (const key in products) {
+              const p = products[key];
+              if (nfcText.includes(p.sku) && nfcText.includes(p.name)) {
+                foundKey = key;
+                break;
+              }
+            }
+
+            if (foundKey) {
+              const product = products[foundKey];
               productTableBody.innerHTML = `
                 <tr>
-                  <td>${nfcId}</td>
+                  <td>${foundKey}</td>
                   <td>${product.name}</td>
                   <td>${product.sku}</td>
                   <td>${product.line}</td>
@@ -136,10 +218,9 @@
                   <td>${product.timestamp}</td>
                 </tr>
               `;
-              // Update summary below table
-              productSummary.textContent = `NFC Tag ID: ${nfcId}, Product Name: ${product.name}, SKU: ${product.sku}, Production Line: ${product.line}, Shift: ${product.shift}, Quantity: ${product.quantity}, QC Status: ${product.qc}, Timestamp: ${product.timestamp}`;
+              productSummary.textContent = NFC Tag ID: ${foundKey}, Product Name: ${product.name}, SKU: ${product.sku}, Production Line: ${product.line}, Shift: ${product.shift}, Quantity: ${product.quantity}, QC Status: ${product.qc}, Timestamp: ${product.timestamp};
             } else {
-              productTableBody.innerHTML = `<tr><td colspan="8">No product found for this NFC tag.</td></tr>`;
+              productTableBody.innerHTML = <tr><td colspan="8">No product found for this NFC tag.</td></tr>;
               productSummary.textContent = "";
             }
           }
@@ -157,7 +238,7 @@
       startNFCScan();
     } else {
       nfcCodeDisplay.textContent = "NFC Code will appear here...";
-      productTableBody.innerHTML = `<tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>`;
+      productTableBody.innerHTML = <tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>;
       productSummary.textContent = "";
     }
   });
