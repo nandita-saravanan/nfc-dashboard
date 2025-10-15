@@ -76,7 +76,7 @@
 </div>
 
 <script>
-  // Demo product data (replace with real DB/API in production)
+  // Demo product data
   const products = {
     "NFC001": {
       name: "Mixer Grinder",
@@ -110,33 +110,37 @@
         await ndef.scan();
         nfcCodeDisplay.textContent = "Scanning for NFC...";
         ndef.onreading = event => {
-          const decoder = new TextDecoder();
           for (const record of event.message.records) {
-            if (record.recordType === "text") {
-              const nfcId = decoder.decode(record.data);
-              nfcCodeDisplay.textContent = `NFC Code: ${nfcId}`;
+            let nfcId = "";
 
-              // Fetch product data
-              const product = products[nfcId];
-              if (product) {
-                productTableBody.innerHTML = `
-                  <tr>
-                    <td>${nfcId}</td>
-                    <td>${product.name}</td>
-                    <td>${product.sku}</td>
-                    <td>${product.line}</td>
-                    <td>${product.shift}</td>
-                    <td>${product.quantity}</td>
-                    <td>${product.qc}</td>
-                    <td>${product.timestamp}</td>
-                  </tr>
-                `;
-                // Update product summary below table
-                productSummary.textContent = `NFC Tag ID: ${nfcId}, Product Name: ${product.name}, SKU: ${product.sku}, Production Line: ${product.line}, Shift: ${product.shift}, Quantity: ${product.quantity}, QC Status: ${product.qc}, Timestamp: ${product.timestamp}`;
-              } else {
-                productTableBody.innerHTML = `<tr><td colspan="8">No product found for this NFC tag.</td></tr>`;
-                productSummary.textContent = "";
-              }
+            // Decode text record properly
+            if (record.recordType === "text") {
+              const textDecoder = new TextDecoder(record.encoding || "utf-8");
+              nfcId = textDecoder.decode(record.data);
+            }
+
+            nfcCodeDisplay.textContent = `NFC Code: ${nfcId}`;
+
+            const product = products[nfcId];
+            if (product) {
+              // Update table
+              productTableBody.innerHTML = `
+                <tr>
+                  <td>${nfcId}</td>
+                  <td>${product.name}</td>
+                  <td>${product.sku}</td>
+                  <td>${product.line}</td>
+                  <td>${product.shift}</td>
+                  <td>${product.quantity}</td>
+                  <td>${product.qc}</td>
+                  <td>${product.timestamp}</td>
+                </tr>
+              `;
+              // Update summary below table
+              productSummary.textContent = `NFC Tag ID: ${nfcId}, Product Name: ${product.name}, SKU: ${product.sku}, Production Line: ${product.line}, Shift: ${product.shift}, Quantity: ${product.quantity}, QC Status: ${product.qc}, Timestamp: ${product.timestamp}`;
+            } else {
+              productTableBody.innerHTML = `<tr><td colspan="8">No product found for this NFC tag.</td></tr>`;
+              productSummary.textContent = "";
             }
           }
         };
