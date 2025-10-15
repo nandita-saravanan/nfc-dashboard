@@ -28,7 +28,7 @@
   table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
   table th, table td { border: 1px solid #00f0ff; padding: 10px; text-align: center; }
   table th { background: #000a1a; text-shadow: 0 0 5px #00f0ff; }
-  tbody tr:nth-child(even) { background-color: #0b0b0b; }
+  #productSummary { margin-top: 1rem; font-size: 1.1rem; color: #00f0ff; text-shadow: 0 0 5px #00f0ff; }
 </style>
 </head>
 <body>
@@ -71,6 +71,7 @@
         </tr>
       </tbody>
     </table>
+    <div id="productSummary"></div>
   </div>
 </div>
 
@@ -100,6 +101,7 @@
   const nfcSwitch = document.getElementById('nfcSwitch');
   const nfcCodeDisplay = document.getElementById('nfcCode');
   const productTableBody = document.getElementById('productTableBody');
+  const productSummary = document.getElementById('productSummary');
 
   async function startNFCScan() {
     if ('NDEFReader' in window) {
@@ -116,9 +118,8 @@
 
               // Fetch product data
               const product = products[nfcId];
-              let newRow;
               if (product) {
-                newRow = `
+                productTableBody.innerHTML = `
                   <tr>
                     <td>${nfcId}</td>
                     <td>${product.name}</td>
@@ -130,15 +131,12 @@
                     <td>${product.timestamp}</td>
                   </tr>
                 `;
+                // Update product summary below table
+                productSummary.textContent = `NFC Tag ID: ${nfcId}, Product Name: ${product.name}, SKU: ${product.sku}, Production Line: ${product.line}, Shift: ${product.shift}, Quantity: ${product.quantity}, QC Status: ${product.qc}, Timestamp: ${product.timestamp}`;
               } else {
-                newRow = `<tr><td colspan="8">No product found for NFC tag: ${nfcId}</td></tr>`;
+                productTableBody.innerHTML = `<tr><td colspan="8">No product found for this NFC tag.</td></tr>`;
+                productSummary.textContent = "";
               }
-
-              // Append the new row instead of replacing table
-              productTableBody.insertAdjacentHTML('beforeend', newRow);
-
-              // Scroll table to show latest row
-              productTableBody.lastElementChild.scrollIntoView({ behavior: "smooth" });
             }
           }
         };
@@ -152,12 +150,11 @@
 
   nfcSwitch.addEventListener('change', () => {
     if (nfcSwitch.checked) {
-      // Clear table before starting (optional)
-      productTableBody.innerHTML = `<tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>`;
       startNFCScan();
     } else {
       nfcCodeDisplay.textContent = "NFC Code will appear here...";
       productTableBody.innerHTML = `<tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>`;
+      productSummary.textContent = "";
     }
   });
 </script>
