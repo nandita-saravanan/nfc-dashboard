@@ -13,24 +13,20 @@
     margin: 0;
     padding: 0;
   }
-
   .container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 1rem;
   }
-
   header {
     text-align: center;
     margin-bottom: 2rem;
   }
-
   header h1 {
     font-size: 2.5rem;
     color: #00f0ff;
     text-shadow: 0 0 10px #00f0ff;
   }
-
   .card {
     background: #0d0d0d;
     border: 1px solid #00f0ff;
@@ -39,44 +35,35 @@
     margin-bottom: 2rem;
     box-shadow: 0 0 20px #00f0ff33;
   }
-
   .card h2 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
     text-shadow: 0 0 5px #00f0ff;
   }
-
   .switch-container {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-top: 1rem;
   }
-
   .switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
   }
-
   .switch input {
     display: none;
   }
-
   .slider {
     position: absolute;
     cursor: pointer;
     background-color: #111;
     border: 2px solid #00f0ff;
     border-radius: 34px;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right:0; bottom:0;
     transition: 0.4s;
   }
-
   .slider:before {
     position: absolute;
     content: "";
@@ -89,40 +76,32 @@
     border-radius: 50%;
     box-shadow: 0 0 10px #00f0ff;
   }
-
   input:checked + .slider {
     background-color: #0a0a0a;
   }
-
   input:checked + .slider:before {
     transform: translateX(26px);
   }
-
   #nfcCode {
     margin-top: 1rem;
     font-size: 1.2rem;
     color: #00f0ff;
     text-shadow: 0 0 5px #00f0ff;
   }
-
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
   }
-
-  table th,
-  table td {
+  table th, table td {
     border: 1px solid #00f0ff;
     padding: 10px;
     text-align: center;
   }
-
   table th {
     background: #000a1a;
     text-shadow: 0 0 5px #00f0ff;
   }
-
   #productSummary {
     margin-top: 1rem;
     font-size: 1.1rem;
@@ -132,89 +111,149 @@
 </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Pro Line Dashboard</h1>
-    </header>
 
-    <div class="card">
-      <h2>NFC Reader</h2>
-      <div class="switch-container">
-        <label class="switch">
-          <input type="checkbox" id="nfcSwitch" />
-          <span class="slider"></span>
-        </label>
-        <span>Activate NFC Reader</span>
-      </div>
-      <div id="nfcCode">NFC Code will appear here...</div>
-    </div>
+<div class="container">
+  <header>
+    <h1>Pro Line Dashboard</h1>
+  </header>
 
-    <div class="card">
-      <h2>Product Details</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>NFC Tag ID</th>
-            <th>Product Name</th>
-            <th>SKU</th>
-            <th>Production Line</th>
-            <th>Shift</th>
-            <th>Quantity</th>
-            <th>QC Status</th>
-            <th>Timestamp</th>
-          </tr>
-        </thead>
-        <tbody id="productTableBody">
-          <tr>
-            <td colspan="8">Scan an NFC tag to see product details.</td>
-          </tr>
-        </tbody>
-      </table>
-      <div id="productSummary"></div>
+  <div class="card">
+    <h2>NFC Reader</h2>
+    <div class="switch-container">
+      <label class="switch">
+        <input type="checkbox" id="nfcSwitch" />
+        <span class="slider"></span>
+      </label>
+      <span>Activate NFC Reader</span>
     </div>
+    <div id="nfcCode">NFC Code will appear here...</div>
   </div>
 
-  <script>
-    // Simulated product data, replace with your real data source
-    const products = {
-      NFC001: {
-        name: "Mixer Grinder",
-        sku: "MG123",
-        line: "Line 1",
-        shift: "Morning",
-        quantity: 1,
-        qc: "Passed",
-        timestamp: "2025-10-15 08:15:30",
-      },
-      NFC002: {
-        name: "Toaster",
-        sku: "TS456",
-        line: "Line 2",
-        shift: "Evening",
-        quantity: 2,
-        qc: "Pending",
-        timestamp: "2025-10-15 10:45:12",
-      },
-    };
+  <div class="card">
+    <h2>Product Details</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>NFC Tag ID</th>
+          <th>Product Name</th>
+          <th>SKU</th>
+          <th>Production Line</th>
+          <th>Shift</th>
+          <th>Quantity</th>
+          <th>QC Status</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody">
+        <tr>
+          <td colspan="8">Scan an NFC tag to see product details.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="productSummary"></div>
+  </div>
+</div>
 
-    const nfcSwitch = document.getElementById("nfcSwitch");
-    const nfcCodeDisplay = document.getElementById("nfcCode");
-    const productTableBody = document.getElementById("productTableBody");
-    const productSummary = document.getElementById("productSummary");
+<script>
+  const products = {
+    NFC001: {
+      name: "Mixer Grinder",
+      sku: "MG123",
+      line: "Line 1",
+      shift: "Morning",
+      quantity: 1,
+      qc: "Passed",
+      timestamp: "2025-10-15 08:15:30",
+    },
+    NFC002: {
+      name: "Toaster",
+      sku: "TS456",
+      line: "Line 2",
+      shift: "Evening",
+      quantity: 2,
+      qc: "Pending",
+      timestamp: "2025-10-15 10:45:12",
+    },
+  };
 
-    async function startNFCScan() {
-      if ("NDEFReader" in window) {
-        const ndef = new NDEFReader();
-        try {
-          await ndef.scan();
-          nfcCodeDisplay.textContent = "Scanning for NFC...";
-          ndef.onreading = (event) => {
-            const decoder = new TextDecoder();
-            for (const record of event.message.records) {
-              if (record.recordType === "text") {
-                const nfcId = decoder.decode(record.data);
-                nfcCodeDisplay.textContent = NFC Code: ${nfcId};
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
+  function getRandomShift() {
+    const shifts = ["Morning", "Evening", "Night"];
+    return shifts[getRandomInt(0, shifts.length - 1)];
+  }
+
+  function getRandomQCStatus() {
+    const statuses = ["Passed", "Pending", "Failed"];
+    return statuses[getRandomInt(0, statuses.length - 1)];
+  }
+
+  function getRandomLine() {
+    const lines = ["Line 1", "Line 2", "Line 3", "Line 4"];
+    return lines[getRandomInt(0, lines.length - 1)];
+  }
+
+  function getRandomProductName() {
+    const names = ["Widget", "Gadget", "Device", "Tool", "Instrument"];
+    return names[getRandomInt(0, names.length - 1)];
+  }
+
+  function getRandomSKU() {
+    return "SKU" + getRandomInt(100, 999);
+  }
+
+  function getCurrentTimestamp() {
+    return new Date().toISOString().replace("T", " ").split(".")[0];
+  }
+
+  const nfcSwitch = document.getElementById("nfcSwitch");
+  const nfcCodeDisplay = document.getElementById("nfcCode");
+  const productTableBody = document.getElementById("productTableBody");
+  const productSummary = document.getElementById("productSummary");
+
+  async function startNFCScan() {
+    if ("NDEFReader" in window) {
+      const ndef = new NDEFReader();
+      try {
+        await ndef.scan();
+        console.log("NFC scan started");
+        nfcCodeDisplay.textContent = "Scanning for NFC...";
+        ndef.onreading = (event) => {
+          console.log("NFC tag detected");
+          const decoder = new TextDecoder();
+          for (const record of event.message.records) {
+            if (record.recordType === "text") {
+              const nfcId = decoder.decode(record.data);
+              console.log("NFC ID read:", nfcId);
+              nfcCodeDisplay.textContent = NFC Code: ${nfcId};
+
+              if (nfcId === "Pqs4O") {
+                // Generate random values for table
+                const randomProduct = {
+                  name: getRandomProductName(),
+                  sku: getRandomSKU(),
+                  line: getRandomLine(),
+                  shift: getRandomShift(),
+                  quantity: getRandomInt(1, 50),
+                  qc: getRandomQCStatus(),
+                  timestamp: getCurrentTimestamp(),
+                };
+                productTableBody.innerHTML = `
+                  <tr>
+                    <td>${nfcId}</td>
+                    <td>${randomProduct.name}</td>
+                    <td>${randomProduct.sku}</td>
+                    <td>${randomProduct.line}</td>
+                    <td>${randomProduct.shift}</td>
+                    <td>${randomProduct.quantity}</td>
+                    <td>${randomProduct.qc}</td>
+                    <td>${randomProduct.timestamp}</td>
+                  </tr>
+                `;
+                productSummary.textContent = NFC Tag ID: ${nfcId}, Product Name: ${randomProduct.name}, SKU: ${randomProduct.sku}, Production Line: ${randomProduct.line}, Shift: ${randomProduct.shift}, Quantity: ${randomProduct.quantity}, QC Status: ${randomProduct.qc}, Timestamp: ${randomProduct.timestamp};
+              } else {
                 const product = products[nfcId];
                 if (product) {
                   productTableBody.innerHTML = `
@@ -236,24 +275,27 @@
                 }
               }
             }
-          };
-        } catch (error) {
-          nfcCodeDisplay.textContent = "NFC scan failed: " + error;
-        }
-      } else {
-        nfcCodeDisplay.textContent = "NFC not supported on this device/browser.";
+          }
+        };
+      } catch (error) {
+        console.error("NFC scan failed:", error);
+        nfcCodeDisplay.textContent = "NFC scan failed: " + error;
       }
+    } else {
+      nfcCodeDisplay.textContent = "NFC not supported on this device/browser.";
     }
+  }
 
-    nfcSwitch.addEventListener("change", () => {
-      if (nfcSwitch.checked) {
-        startNFCScan();
-      } else {
-        nfcCodeDisplay.textContent = "NFC Code will appear here...";
-        productTableBody.innerHTML = <tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>;
-        productSummary.textContent = "";
-      }
-    });
-  </script>
+  nfcSwitch.addEventListener("change", () => {
+    if (nfcSwitch.checked) {
+      startNFCScan();
+    } else {
+      nfcCodeDisplay.textContent = "NFC Code will appear here...";
+      productTableBody.innerHTML = <tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>;
+      productSummary.textContent = "";
+    }
+  });
+</script>
+
 </body>
 </html>
