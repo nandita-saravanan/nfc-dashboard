@@ -28,6 +28,7 @@
   table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
   table th, table td { border: 1px solid #00f0ff; padding: 10px; text-align: center; }
   table th { background: #000a1a; text-shadow: 0 0 5px #00f0ff; }
+  tbody tr:nth-child(even) { background-color: #0b0b0b; }
 </style>
 </head>
 <body>
@@ -115,8 +116,9 @@
 
               // Fetch product data
               const product = products[nfcId];
+              let newRow;
               if (product) {
-                productTableBody.innerHTML = `
+                newRow = `
                   <tr>
                     <td>${nfcId}</td>
                     <td>${product.name}</td>
@@ -129,8 +131,14 @@
                   </tr>
                 `;
               } else {
-                productTableBody.innerHTML = `<tr><td colspan="8">No product found for this NFC tag.</td></tr>`;
+                newRow = `<tr><td colspan="8">No product found for NFC tag: ${nfcId}</td></tr>`;
               }
+
+              // Append the new row instead of replacing table
+              productTableBody.insertAdjacentHTML('beforeend', newRow);
+
+              // Scroll table to show latest row
+              productTableBody.lastElementChild.scrollIntoView({ behavior: "smooth" });
             }
           }
         };
@@ -144,6 +152,8 @@
 
   nfcSwitch.addEventListener('change', () => {
     if (nfcSwitch.checked) {
+      // Clear table before starting (optional)
+      productTableBody.innerHTML = `<tr><td colspan="8">Scan an NFC tag to see product details.</td></tr>`;
       startNFCScan();
     } else {
       nfcCodeDisplay.textContent = "NFC Code will appear here...";
